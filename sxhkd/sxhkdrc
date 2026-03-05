@@ -1,0 +1,292 @@
+# terminal emulator
+super + Return
+	kitty
+
+# dmenu program launcher
+super + m
+  dmenu_run -m dmenumon -fn "Jetbrains Mono Medium:size=16" -nb "#10151a" -sb "#7aa6da" -sf "#ffffff"
+
+# Rofi launcher
+super + d
+    ~/.config/rofi/launch.sh
+
+# Open Thunar file manager
+super + shift + f
+    thunar
+
+# Google Chrome
+alt + g
+    google-chrome-stable
+
+
+# Open WiFi menu
+super + n
+    kitty -e nmtui
+
+
+# Screen shot interactive selection (GUI)
+super + shift + s
+    flameshot gui
+
+# Wallpaper Selector
+super + w
+    ~/.config/bspwm/wallpaper-selector.sh
+    # rofi -theme ~/.config/rofi/theme.rasi \
+    #  -show wallpapers \
+    #  -modi "wallpapers:~/.config/bspwm/wallpaper-preview.sh"
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+
+# volume increase
+XF86AudioRaiseVolume
+#   pamixer -i 5 --allow-boost --set-limit 150
+  pamixer -i 5 --allow-boost --set-limit 150 && \
+  dunstify -h string:x-dunst-stack-tag:volume "Volume: $(pamixer --get-volume)%" -t 1000 && \
+  polybar-msg hook volume 1
+
+# volume dicresae
+XF86AudioLowerVolume
+  pamixer -d 5 && \
+  dunstify -h string:x-dunst-stack-tag:volume "Volume: $(pamixer --get-volume)%" -t 1000 && \
+  polybar-msg hook volume 1
+
+
+# volume mute
+XF86AudioMute
+  pamixer -t && \
+  dunstify -h string:x-dunst-stack-tag:volume "Mute: $(pamixer --get-mute)" -t 1000
+  polybar-msg hook volume 1
+
+
+# Mic Toggle Mute
+super + F1
+    pamixer --default-source -t && \
+    dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-mute | awk '{if($1=="true") print "Muted"; else print "Unmuted"}')" -t 1000
+
+# Increase Mic Gain (+5%)
+super + F2
+    pamixer --default-source -i 5 && \
+    dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-volume)%" -t 1000
+
+# Decrease Mic Gain (-5%)
+super + F3
+    pamixer --default-source -d 5 && \
+    dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-volume)%" -t 1000
+
+
+# Brightness control (requires light package)
+# Increase brightness
+XF86MonBrightnessUp
+    brightnessctl set 5%+ && \
+    dunstify -h string:x-dunst-stack-tag:brightness "Brightness: $(brightnessctl info | grep -oP '\d+%')" -t 1000
+
+XF86MonBrightnessDown
+    brightnessctl set 5%- && \
+    dunstify -h string:x-dunst-stack-tag:brightness "Brightness: $(brightnessctl info | grep -oP '\d+%')" -t 1000
+
+
+# Toggle redshift on/off
+super + shift + r
+    redshift -x && redshift -O 4700 # Warm light (lower = more orange)
+
+# Increase warmth (make more orange)
+super + r 
+    redshift -x && redshift -O 5500 # make more neutral daylight (6500K is pure white)
+
+# Open redshift GUI
+super + r
+    redshift-gtk
+
+
+# Notification history menu
+super + shift + n
+    ~/.config/rofi/notify-menu.sh
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# close and kill
+super + q
+	bspc node -{c,k}
+
+# Language Switch (Super + Space)
+super + space
+    setxkbmap -query | grep -q "layout:\s*us" && setxkbmap ru || setxkbmap us
+
+##############################
+# Window Focus (super+hjkl)  #
+##############################
+super + h
+	bspc node -f west
+super + j
+	bspc node -f south
+super + k
+	bspc node -f north
+super + l
+	bspc node -f east
+
+##############################
+# Window Resize (super+shift+hjkl) #
+##############################
+super + shift + h
+	bspc node -z left -40 0
+super + shift + j
+	bspc node -z bottom 0 40
+super + shift + k
+	bspc node -z top 0 -40
+super + shift + l
+	bspc node -z right 40 0
+
+##############################
+# Workspace Navigation       #
+##############################
+# Switch to workspace 1-9
+super + {1-9}
+	bspc desktop -f '^{1-9}'
+
+# Move window to workspace 1-9
+super + shift + {1-9}
+	bspc node -d '^{1-9}'
+
+# for workspace 10
+super + 0
+    bspc desktop -f '^10'
+super + shift + 0
+    bspc node -d '^10'
+
+# Next/previous workspace (super+tab / super+shift+tab)
+super + Tab
+	bspc desktop -f next.local
+super + shift + Tab
+	bspc desktop -f prev.local
+
+
+##############################
+# Window Management          #
+##############################
+super + f
+	bspc node -t '~fullscreen'
+super + t
+	bspc node -t '~tiled'
+super + s
+	bspc node -t '~floating'
+
+
+super + o
+  bspc node -s oldest
+
+
+# alternate between the tiled and monocle layout
+# super + m
+# 	bspc desktop -l next
+
+
+# send the newest marked node to the newest preselected node
+# super + y
+# 	bspc node newest.marked.local -n newest.!automatic.local
+
+
+# Swap with the north/south/east/west window
+super + shift + u
+	bspc node -s north
+
+super + shift + d
+  bspc node -s south
+
+super + shift + e
+  bspc node -s east
+
+super + shift + w
+  bspc node -s west
+
+
+#
+# state/flags
+#
+
+# set the window state
+# super + {t,shift + t,s,f}
+# 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+# super + ctrl + {m,x,y,z}
+# 	bspc node -g {marked,locked,sticky,private}
+
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+# super + {h,j,k,l}
+# 	bspc node -{f,s} {west,south,north,east}
+
+
+# focus the next/previous window in the current desktop
+# super + {_,shift + }c
+# 	bspc node -f {next,prev}.local.!hidden.window
+
+
+# focus the next/previous desktop in the current monitor
+# super + bracket{left,right}
+# 	bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+# super + {o,i}
+# 	bspc wm -h off; \
+# 	bspc node {older,newer} -f; \
+# 	bspc wm -h on
+
+# focus or send to the given desktop
+# super + {_,shift + }{1-9,0}
+# 	bspc {desktop -f,node -d} '^{1-9,10}'
+
+
+#
+# preselect
+#
+
+# preselect the direction
+# super + ctrl + {h,j,k,l}
+# 	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+# super + ctrl + {1-9}
+# 	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+# super + ctrl + space
+# 	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+# super + ctrl + shift + space
+# 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+# super + shift + {h,j,k,l}
+# 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+# super + alt + shift + {h,j,k,l}
+# 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+# super + {Left,Down,Up,Right}
+# 	bspc node -v {-20 0,0 20,0 -20,20 0}

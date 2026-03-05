@@ -1,0 +1,17 @@
+return {
+  "nvim-lualine/lualine.nvim",
+  dependencies = { "nvim-tree/nvim-web-devicons" },
+
+  config = function()
+    require("lualine").setup({
+      options = {
+        --theme = "codedark",
+        -- theme = "dracula",
+        -- theme = "gruvbox_dark",
+        -- theme = 'everforest'
+        theme = 'gruvbox-material'
+        -- theme = 'catppuccin'
+      },
+    })
+  end,
+}

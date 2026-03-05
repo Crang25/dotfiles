@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+# Set up monitors (adjust based on your setup)
+bspc monitor -d 1 2 3 4 5 6 7 8
+
+# Basic configuration
+bspc config border_width         0
+bspc config window_gap           20
+
+# Colors
+bspc config normal_border_color   "#504945"
+bspc config active_border_color   "#504945"
+bspc config focused_border_color  "#79740e"
+
+# Tiling settings
+bspc config split_ratio           0.52
+bspc config borderless_monocle    true
+bspc config gapless_monocle       true
+
+bspc config focus_follows_pointer super
+bspc config pointer_modifier      super
+
+# Rules for specific applications
+bspc rule -a Firefox desktop='^4'
+bspc rule -a jetbrains-webstorm desktop='^3'
+# Force WebStorm to single instance
+# bspc rule -a jetbrains-webstorm desktop='^3' state=tiled follow=on
+
+# Autostart applications
+# Set wallpaper
+feh --bg-fill ~/Pictures/wallpapers/gruvbox/school_of_athens.jpg
+# Launch Polybar
+~/.config/polybar/launch.sh
+# Launch Picom with config
+picom --config ~/.config/picom/picom.conf &
+# Launch Dunst
+dunst &
+# Start Network Manager applet
+nm-applet &
+# Start Bluetooth tray icon
+blueman-applet &
+
+# Make warmer screen
+redshift -x && redshift -O 4700 &
+
+# setroot -cursor-name left_ptr &
+# Set cursor theme
+xsetroot -cursor_name left_ptr
+
+# Load Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
