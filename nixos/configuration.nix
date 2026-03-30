@@ -3,8 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-{
+let
+  customDwm = pkgs.callPackage ./pkgs/dwm.nix { };
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -76,20 +77,29 @@
   services.displayManager.defaultSession = "none+bspwm";
   services.xserver = {
     enable = true;
-    windowManager.bspwm.enable = true;
-    displayManager = {
-      lightdm.enable = true;
-      # defaultSession = "none+bspwm";
-
-      sessionCommands = ''
-        # Set X11 cursor
-        ${pkgs.xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr
-        
-        # Set GTK cursor
-        export XCURSOR_THEME=Adwaita
-        export XCURSOR_SIZE=24
-      '';
+    windowManager = {
+      bspwm.enable = true;
+      dwm = {
+        enable = true;
+        package = customDwm;
+        extraSessionCommands = ''
+          ${pkgs.bash}/bin/bash "$HOME/.config/dwm/autostart.sh" &
+        '';
+      };
     };
+    # displayManager = {
+    #   lightdm.enable = true;
+    #   # defaultSession = "none+bspwm";
+    #
+    #   sessionCommands = ''
+    #     # Set X11 cursor
+    #     ${pkgs.xorg.xsetroot}/bin/xsetroot -cursor_name left_ptr
+    #     
+    #     # Set GTK cursor
+    #     export XCURSOR_THEME=Adwaita
+    #     export XCURSOR_SIZE=24
+    #   '';
+    # };
 
     # Configure keymap in X11
     xkb = {
@@ -97,6 +107,43 @@
       variant = "";
     };
   };
+
+   services.xserver.displayManager.lightdm = {
+    enable = true;
+    background = "/home/violin/Pictures/wallpapers/gruvbox/school_of_athens.jpg";
+
+    greeters.gtk = {
+      theme = {
+        package = pkgs.arc-theme;
+        name = "Arc-Dark";
+      };
+      iconTheme = {
+        package = pkgs.papirus-icon-theme;
+        name = "Papirus-Dark";
+      };
+      cursorTheme = {
+        package = pkgs.adwaita-icon-theme;
+        name = "Adwaita";
+        size = 24;
+      };
+      clock-format = "%a, %d %b %H:%M";
+      indicators = [
+        "~host"
+        "~spacer"
+        "~clock"
+        "~spacer"
+        "~session"
+        "~language"
+        "~a11y"
+        "~power"
+      ];
+      extraConfig = ''
+        font-name = JetBrainsMono Nerd Font 12
+        xft-antialias = true
+      '';
+    };
+  }; 
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput = {
     enable = true;
@@ -153,32 +200,32 @@
   services.openvpn.servers = {
     hoChoMinhVPN  = {
       # config = '' config /home/violin/Downloads/configs/yerevan_tcp.conf '';
-      config = builtins.readFile ./vpn/ho_chi_minh_tcp.conf;
+      config = builtins.readFile /etc/nixos/vpn/ho_chi_minh_tcp.conf;
       updateResolvConf = true;
       autoStart = false;
     };
     yerevanVPN  = {
       # config = '' config /home/violin/Downloads/configs/yerevan_tcp.conf '';
-      config = builtins.readFile ./vpn/yerevan_tcp.conf;
+      config = builtins.readFile /etc/nixos/vpn/yerevan_tcp.conf;
       updateResolvConf = true;
       autoStart = false;
     };
     helsinkiVPN  = {
       # config = '' config /home/violin/Downloads/configs/helsinki_tcp.conf '';
-      config = builtins.readFile ./vpn/helsinki_tcp.conf;
+      config = builtins.readFile /etc/nixos/vpn/helsinki_tcp.conf;
       updateResolvConf = true;
       autoStart = false;
     };
     frankfurtVPN  = {
       # config = '' /home/violin/Downloads/configs/frankfurt_1_tcp.conf '';
-      config = builtins.readFile ./vpn/frankfurt_1_tcp.conf;
+      config = builtins.readFile /etc/nixos/vpn/frankfurt_1_tcp.conf;
       updateResolvConf = true;
       autoStart = false;
     };
   };
   
   # Ensure the openvpn user can read the config files
-  system.activationScripts.openvpn-permissions = ''chmod 644 /home/violin/Downloads/configs/*.conf'';
+  system.activationScripts.openvpn-permissions = ''chmod 644 /etc/nixos/vpn/*.conf'';
 
 
   location.latitude = "40.1568604087553";
@@ -343,6 +390,8 @@
     picom                 # Compositor
     feh                   # Image viewer/wallpaper setter
     acpi                  # Advanced Configuration and Power Interface
+    xdotool               # X11 automation/debugging helper during dwm migration
+    wmctrl                # Window inspection helper during dwm migration
 
     # Dark theme packages
     arc-theme

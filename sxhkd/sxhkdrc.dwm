@@ -1,0 +1,68 @@
+# Application launchers
+super + Return
+	kitty
+
+super + m
+	dmenu_run -m dmenumon -fn "Jetbrains Mono Medium:size=16" -nb "#10151a" -sb "#7aa6da" -sf "#ffffff"
+
+super + d
+	~/.config/rofi/launch.sh
+
+super + shift + f
+	thunar
+
+alt + g
+	google-chrome-stable
+
+super + n
+	kitty -e nmtui
+
+super + shift + s
+	flameshot gui
+
+super + w
+	~/.config/bspwm/wallpaper-selector.sh
+
+super + shift + n
+	~/.config/rofi/notify-menu.sh
+
+# Reload sxhkd
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# Media and brightness
+XF86AudioRaiseVolume
+	pamixer -i 5 --allow-boost --set-limit 150 && \
+	dunstify -h string:x-dunst-stack-tag:volume "Volume: $(pamixer --get-volume)%" -t 1000
+
+XF86AudioLowerVolume
+	pamixer -d 5 && \
+	dunstify -h string:x-dunst-stack-tag:volume "Volume: $(pamixer --get-volume)%" -t 1000
+
+XF86AudioMute
+	pamixer -t && \
+	dunstify -h string:x-dunst-stack-tag:volume "Mute: $(pamixer --get-mute)" -t 1000
+
+super + F1
+	pamixer --default-source -t && \
+	dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-mute | awk '{if($1==\"true\") print \"Muted\"; else print \"Unmuted\"}')" -t 1000
+
+super + F2
+	pamixer --default-source -i 5 && \
+	dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-volume)%" -t 1000
+
+super + F3
+	pamixer --default-source -d 5 && \
+	dunstify -h string:x-dunst-stack-tag:mic "Mic: $(pamixer --default-source --get-volume)%" -t 1000
+
+XF86MonBrightnessUp
+	brightnessctl set 5%+ && \
+	dunstify -h string:x-dunst-stack-tag:brightness "Brightness: $(brightnessctl info | grep -oP '\d+%')" -t 1000
+
+XF86MonBrightnessDown
+	brightnessctl set 5%- && \
+	dunstify -h string:x-dunst-stack-tag:brightness "Brightness: $(brightnessctl info | grep -oP '\d+%')" -t 1000
+
+# Keyboard layout
+super + space
+	setxkbmap -query | grep -q "layout:\s*us" && setxkbmap ru || setxkbmap us
