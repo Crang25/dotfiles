@@ -108,7 +108,7 @@ in {
     };
   };
 
-   services.xserver.displayManager.lightdm = {
+  services.xserver.displayManager.lightdm = {
     enable = true;
     # Keep the greeter wallpaper inside the flake so pure evaluation works
     # and the lightdm user can always read it from the store.
@@ -116,12 +116,12 @@ in {
 
     greeters.gtk = {
       theme = {
-        package = pkgs.arc-theme;
-        name = "Arc-Dark";
+        package = pkgs.gruvbox-dark-gtk;
+        name = "gruvbox-dark";
       };
       iconTheme = {
-        package = pkgs.papirus-icon-theme;
-        name = "Papirus-Dark";
+        package = pkgs.gruvbox-dark-icons-gtk;
+        name = "oomox-gruvbox-dark";
       };
       cursorTheme = {
         package = pkgs.adwaita-icon-theme;
@@ -142,6 +142,8 @@ in {
       extraConfig = ''
         font-name = JetBrainsMono Nerd Font 12
         xft-antialias = true
+        xft-hintstyle = hintslight
+        xft-rgba = rgb
       '';
     };
   }; 
