@@ -3,7 +3,7 @@ super + Return
 	kitty
 
 super + m
-	dmenu_run -m dmenumon -fn "Jetbrains Mono Medium:size=16" -nb "#10151a" -sb "#7aa6da" -sf "#ffffff"
+	dmenu_run -m 0 -fn "Jetbrains Mono Medium:size=18" -nb "#10151a" -sb "#7aa6da" -sf "#ffffff"
 
 super + d
 	~/.config/rofi/launch.sh

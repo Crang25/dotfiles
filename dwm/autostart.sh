@@ -13,6 +13,12 @@ pgrep -x dunst >/dev/null || dunst &
 pgrep -x nm-applet >/dev/null || nm-applet &
 pgrep -x blueman-applet >/dev/null || blueman-applet &
 
+if command -v systemctl >/dev/null 2>&1; then
+	systemctl --user start redshift.service >/dev/null 2>&1 || (redshift -x && redshift -O 4700 &)
+else
+	redshift -x && redshift -O 4700 &
+fi
+
 feh --bg-fill "$HOME/Pictures/wallpapers/gruvbox/school_of_athens.jpg"
 xsetroot -cursor_name left_ptr
 

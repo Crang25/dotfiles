@@ -200,25 +200,25 @@ in {
   services.openvpn.servers = {
     hoChoMinhVPN  = {
       # config = '' config /home/violin/Downloads/configs/yerevan_tcp.conf '';
-      config = builtins.readFile /etc/nixos/vpn/ho_chi_minh_tcp.conf;
+      config = "config /etc/nixos/vpn/ho_chi_minh_tcp.conf";
       updateResolvConf = true;
       autoStart = false;
     };
     yerevanVPN  = {
       # config = '' config /home/violin/Downloads/configs/yerevan_tcp.conf '';
-      config = builtins.readFile /etc/nixos/vpn/yerevan_tcp.conf;
+      config = "config /etc/nixos/vpn/yerevan_tcp.conf";
       updateResolvConf = true;
       autoStart = false;
     };
     helsinkiVPN  = {
       # config = '' config /home/violin/Downloads/configs/helsinki_tcp.conf '';
-      config = builtins.readFile /etc/nixos/vpn/helsinki_tcp.conf;
+      config = "config /etc/nixos/vpn/helsinki_tcp.conf";
       updateResolvConf = true;
       autoStart = false;
     };
     frankfurtVPN  = {
       # config = '' /home/violin/Downloads/configs/frankfurt_1_tcp.conf '';
-      config = builtins.readFile /etc/nixos/vpn/frankfurt_1_tcp.conf;
+      config = "config /etc/nixos/vpn/frankfurt_1_tcp.conf";
       updateResolvConf = true;
       autoStart = false;
     };

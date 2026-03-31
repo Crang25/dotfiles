@@ -36,6 +36,18 @@ brightness_status() {
 	fi
 }
 
+mic_status() {
+	if [ "$(pamixer --default-source --get-mute 2>/dev/null || printf true)" = "true" ]; then
+		printf "Mic muted"
+	else
+		printf "Mic %s%%" "$(pamixer --default-source --get-volume 2>/dev/null || printf '?')"
+	fi
+}
+
+memory_status() {
+	free | awk '/Mem:/ {printf "RAM %.0f%%", ($3 / $2) * 100}'
+}
+
 battery_status() {
 	local battery_line
 	battery_line="$(acpi -b 2>/dev/null | head -n 1 || true)"
@@ -51,6 +63,6 @@ clock_status() {
 }
 
 while true; do
-	xsetroot -name "$(wifi_status) | $(volume_status) | $(brightness_status) | $(battery_status) | $(clock_status)"
+	xsetroot -name "$(wifi_status) | $(volume_status) | $(mic_status) | $(brightness_status) | $(memory_status) | $(battery_status) | $(clock_status)"
 	sleep "$interval"
 done

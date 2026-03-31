@@ -6,10 +6,22 @@ static const int showbar = 1;
 static const int topbar = 1;
 
 static const char *fonts[] = {
-	"JetBrainsMono Nerd Font:size=11:antialias=true:autohint=true",
-	"Hack Nerd Font:size=11:antialias=true:autohint=true",
+	"JetBrainsMono Nerd Font:size=15:antialias=true:autohint=true",
+	"Hack Nerd Font:size=15:antialias=true:autohint=true",
 };
-static const char dmenufont[] = "JetBrainsMono Nerd Font:size=11";
+static const char dmenufont[] = "JetBrainsMono Nerd Font:size=16";
+static char dmenumon[2] = "0";
+static const char *dmenucmd[] = {
+	"dmenu_run",
+	"-m", dmenumon,
+	"-fn", dmenufont,
+	"-nb", "#282828",
+	"-nf", "#ebdbb2",
+	"-sb", "#79740e",
+	"-sf", "#fbf1c7",
+	NULL
+};
+static const char *termcmd[] = { "kitty", NULL };
 static const char col_gray1[] = "#282828";
 static const char col_gray2[] = "#504945";
 static const char col_gray3[] = "#ebdbb2";
