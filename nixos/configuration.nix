@@ -274,11 +274,17 @@ in {
   # storage optimization during every build
   nix.settings.auto-optimise-store = true;
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";     # zstd is default and best compression/speed tradeoff
+    memoryPercent = 100;     # how much of RAM to use for zram (default: 50)
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.violin = {
     isNormalUser = true;
     description = "violin";
-    extraGroups = [ "networkmanager" "wheel" "bluetooth" "audio" "storage" "disk" "plugdev" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "bluetooth" "audio" "storage" "disk" "plugdev" "docker" "libvirtd" "kvm" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       # neccessary tools
@@ -306,6 +312,11 @@ in {
       emacs # super cool text editor
       warpd # mouseless tool
 
+      # virtualisation
+      drawterm
+      qemu
+      virt-manager
+
       # fancy, buitiful or useful utils
       dua
       ags                 # widgets for terminal
@@ -326,6 +337,7 @@ in {
       playerctl           # Command-line utility and library for controlling media players that implement MPRIS
       calcurse            # Calendar and scheduling application for the command line
       obs-studio          # Screen recorder
+      kdePackages.okular  # Books reader
     ];
   };
 
@@ -361,6 +373,10 @@ in {
     # Optional: Enable Docker on boot
     # enableOnBoot = true;
   };
+
+  # for virtual machines
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
