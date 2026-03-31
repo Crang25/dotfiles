@@ -1,8 +1,8 @@
-# DWM Keybindings
+# Desktop Cheat Sheet
 
 `MOD` = `Super`
 
-## Window Management
+## DWM Window Management
 
 - `MOD + j`: focus next window
 - `MOD + k`: focus previous window
@@ -10,7 +10,7 @@
 - `MOD + q`: close focused window
 - `MOD + s`: toggle floating for focused window
 
-## Layout Management
+## DWM Layout Management
 
 - `MOD + t`: tile layout
 - `MOD + f`: monocle layout
@@ -18,7 +18,7 @@
 - `MOD + h`: shrink master area
 - `MOD + l`: grow master area
 
-## Tag Management
+## DWM Tag Management
 
 - `MOD + 1..9`: view tag
 - `MOD + Tab`: return to previous tag/view
@@ -28,18 +28,18 @@
 - `MOD + Ctrl + 1..9`: toggle tag in current view
 - `MOD + Ctrl + Shift + 1..9`: toggle focused window on tag
 
-## Multi-Monitor
+## DWM Multi-Monitor
 
 - `MOD + ,`: focus previous monitor
 - `MOD + .`: focus next monitor
 - `MOD + Shift + ,`: move focused window to previous monitor
 - `MOD + Shift + .`: move focused window to next monitor
 
-## Session
+## DWM Session
 
 - `MOD + Ctrl + q`: quit `dwm`
 
-## App / Utility Shortcuts
+## SXHKD Launchers
 
 - `MOD + Return`: open `kitty`
 - `MOD + d`: open `rofi`
@@ -53,7 +53,7 @@
 - `MOD + Shift + p`: power menu
 - `MOD + Escape`: reload `sxhkd`
 
-## Media / System Keys
+## SXHKD Media And System
 
 - `XF86AudioRaiseVolume`: volume up
 - `XF86AudioLowerVolume`: volume down
@@ -65,9 +65,34 @@
 - `XF86MonBrightnessDown`: brightness down
 - `MOD + Space`: toggle keyboard layout between `us` and `ru`
 
+## Polybar Mouse Actions
+
+- `date`: left click opens `calcurse`
+- `media`: left click play/pause, middle click stop, right click next track
+- `media`: scroll up/down changes player volume
+- `wifi`: left click opens `nmtui` in `kitty`
+- `volume`: left click toggles mute, right click opens `pavucontrol`
+- `volume`: scroll up/down changes output volume
+- `mic`: left click toggles source mute, right click opens `pavucontrol` on input tab
+
+## Bar Items
+
+- `date`: date and time
+- `media`: current player state/title
+- `cpu`: CPU usage
+- `ram`: memory usage
+- `wifi`: current Wi-Fi SSID or disconnected state
+- `volume`: output volume state
+- `mic`: microphone mute/level state
+- `brightness`: current backlight level
+- `battery`: charge state and percentage
+- `tray`: system tray icons
+
 ## Useful Workflows
 
 - Move a window to another tag: `MOD + Shift + 3`, then `MOD + 3`
 - Show multiple tags at once: `MOD + Ctrl + 2`, then `MOD + Ctrl + 3`
 - Keep one window on multiple tags: `MOD + Ctrl + Shift + 2`
 - Focus a distraction-free single window: `MOD + f`
+- Open the power menu without a terminal: `MOD + Shift + p`
+- Change Wi-Fi from the bar or keyboard: click `wifi` in `polybar` or press `MOD + n`
