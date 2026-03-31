@@ -110,7 +110,9 @@ in {
 
    services.xserver.displayManager.lightdm = {
     enable = true;
-    background = "/home/violin/Pictures/wallpapers/gruvbox/school_of_athens.jpg";
+    # Keep the greeter wallpaper inside the flake so pure evaluation works
+    # and the lightdm user can always read it from the store.
+    background = ./assets/lightdm-background.jpg;
 
     greeters.gtk = {
       theme = {
