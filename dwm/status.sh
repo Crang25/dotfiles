@@ -11,20 +11,20 @@ wifi_status() {
 		local ssid
 		ssid="$(nmcli -t -f active,ssid dev wifi | awk -F: '$1 == "yes" { print $2; exit }')"
 		if [ -n "$ssid" ]; then
-			printf "WiFi %s" "$ssid"
+			printf " %s" "$ssid"
 		else
-			printf "WiFi scanning"
+			printf " scanning"
 		fi
 	else
-		printf "WiFi off"
+		printf " off"
 	fi
 }
 
 volume_status() {
 	if [ "$(pamixer --get-mute 2>/dev/null || printf true)" = "true" ]; then
-		printf "Vol muted"
+		printf "󰖁 muted"
 	else
-		printf "Vol %s%%" "$(pamixer --get-volume 2>/dev/null || printf '?')"
+		printf " %s%%" "$(pamixer --get-volume 2>/dev/null || printf '?')"
 	fi
 }
 
@@ -32,17 +32,17 @@ brightness_status() {
 	local percent
 	percent="$(brightnessctl info 2>/dev/null | sed -n 's/.*(\([0-9]\+%\)).*/\1/p' | head -n 1)"
 	if [ -n "$percent" ]; then
-		printf "Bri %s" "$percent"
+		printf "󰃠 %s" "$percent"
 	else
-		printf "Bri n/a"
+		printf "󰃠 n/a"
 	fi
 }
 
 mic_status() {
 	if [ "$(pamixer --default-source --get-mute 2>/dev/null || printf true)" = "true" ]; then
-		printf "Mic muted"
+		printf "󰍭 muted"
 	else
-		printf "Mic %s%%" "$(pamixer --default-source --get-volume 2>/dev/null || printf '?')"
+		printf "󰍬 %s%%" "$(pamixer --default-source --get-volume 2>/dev/null || printf '?')"
 	fi
 }
 
@@ -51,7 +51,7 @@ update_cpu_status() {
 	local idle_total total total_delta idle_delta usage
 
 	if ! read -r cpu user nice system idle iowait irq softirq steal guest guest_nice < /proc/stat; then
-		cpu_text="CPU n/a"
+		cpu_text=" n/a"
 		return
 	fi
 
@@ -62,9 +62,9 @@ update_cpu_status() {
 		total_delta=$((total - prev_cpu_total))
 		idle_delta=$((idle_total - prev_cpu_idle))
 		usage=$(((100 * (total_delta - idle_delta)) / total_delta))
-		cpu_text="CPU ${usage}%"
+		cpu_text=" ${usage}%"
 	else
-		cpu_text="CPU n/a"
+		cpu_text=" n/a"
 	fi
 
 	prev_cpu_total=$total
@@ -72,26 +72,41 @@ update_cpu_status() {
 }
 
 memory_status() {
-	free | awk '/Mem:/ {printf "RAM %.0f%%", ($3 / $2) * 100}'
+	free | awk '/Mem:/ {printf " %.0f%%", ($3 / $2) * 100}'
 }
 
 battery_status() {
-	local battery_line
+	local battery_line percent icon
 	battery_line="$(acpi -b 2>/dev/null | head -n 1 || true)"
 	if [ -n "$battery_line" ]; then
-		printf "%s" "$battery_line" | awk -F', ' '{printf "Bat %s", $2}'
+		percent="$(printf "%s" "$battery_line" | sed -n 's/.* \([0-9]\+%\).*/\1/p')"
+		case "${percent%\%}" in
+			9|[0-9]) icon="" ;;
+			1[0-9]|2[0-4]) icon="" ;;
+			2[5-9]|3[0-9]|4[0-9]) icon="" ;;
+			5[0-9]|6[0-9]|7[0-4]) icon="" ;;
+			*) icon="" ;;
+		esac
+		if printf "%s" "$battery_line" | grep -q "Charging"; then
+			icon=" ${icon}"
+		fi
+		if [ -n "$percent" ]; then
+			printf "%s %s" "$icon" "$percent"
+		else
+			printf "%s n/a" "$icon"
+		fi
 	else
-		printf "Bat n/a"
+		printf " n/a"
 	fi
 }
 
 clock_status() {
-	date '+%a %d-%m-%Y %H:%M'
+	date '+ %a %d-%m-%Y  %H:%M'
 }
 
 update_cpu_status
 while true; do
 	update_cpu_status
-	xsetroot -name "$(wifi_status) | $(volume_status) | $(mic_status) | $(brightness_status) | ${cpu_text} | $(memory_status) | $(battery_status) | $(clock_status)"
+	xsetroot -name "$(clock_status) | $(wifi_status) | $(volume_status) | $(mic_status) | $(brightness_status) | ${cpu_text} | $(memory_status) | $(battery_status)"
 	sleep "$interval"
 done

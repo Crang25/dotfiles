@@ -8,5 +8,6 @@ pkgs.dwm.override {
       hash = "sha256-Kh1aP1xgZAREjTy7Xz48YBo3rhrJngspUYwBU2Gyw7k=";
     })
     ../patches/dwm-no-occupied-tag-indicator.patch
+    ../patches/dwm-gaps.patch
   ];
 }
