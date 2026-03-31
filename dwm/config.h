@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
-static const unsigned int borderpx = 2;
+static const unsigned int borderpx = 4;
 static const unsigned int gappx = 18;
 static const unsigned int snap = 24;
 static const unsigned int systraypinning = 0;
@@ -40,15 +40,15 @@ static const char *colors[][3] = {
 };
 
 static const char *tags[] = {
-	"  chat ",     // 1
-	"  chrome ",   // 2
-	"  code ",     // 3
-	"  firefox ",  // 4
-	"  term ",     // 5
-	"  vm ",       // 6
-	"  media ",    // 7
-	"  read ",     // 8
-	"  misc ",     // 9
+	" ",     // 1
+	" ",   // 2
+	" ",     // 3
+	" ",  // 4
+	" ",     // 5
+	" ",       // 6
+	" ",    // 7
+	" ",     // 8
+	" ",     // 9
 };
 
 static const Rule rules[] = {

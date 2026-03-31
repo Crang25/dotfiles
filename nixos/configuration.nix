@@ -112,7 +112,7 @@ in {
     enable = true;
     # Keep the greeter wallpaper inside the flake so pure evaluation works
     # and the lightdm user can always read it from the store.
-    background = ./assets/lightdm-background.jpg;
+    background = ./assets/dock.png;
 
     greeters.gtk = {
       theme = {
