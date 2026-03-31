@@ -45,7 +45,10 @@
 - `MOD + d`: open `rofi`
 - `MOD + m`: open `dmenu_run`
 - `MOD + Shift + f`: open `thunar`
-- `Alt + g`: open `google-chrome-stable`
+- `Alt + s`: open `slack` on tag `1`
+- `Alt + g`: open `google-chrome-stable` on tag `2`
+- `Alt + j`: open `jetbrains-toolbox` on tag `3`
+- `Alt + f`: open `firefox` on tag `4`
 - `MOD + n`: open `nmtui` in `kitty`
 - `MOD + Shift + s`: open `flameshot`
 - `MOD + w`: wallpaper selector

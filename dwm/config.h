@@ -52,7 +52,14 @@ static const char *tags[] = {
 };
 
 static const Rule rules[] = {
+	{ "Slack", NULL, NULL, 1 << 0, 0, -1 },
+	{ "slack", NULL, NULL, 1 << 0, 0, -1 },
+	{ "Google-chrome", NULL, NULL, 1 << 1, 0, -1 },
+	{ "google-chrome", NULL, NULL, 1 << 1, 0, -1 },
+	{ "jetbrains-toolbox", NULL, NULL, 1 << 2, 0, -1 },
+	{ "Jetbrains-toolbox", NULL, NULL, 1 << 2, 0, -1 },
 	{ "Firefox", NULL, NULL, 1 << 3, 0, -1 },
+	{ "firefox", NULL, NULL, 1 << 3, 0, -1 },
 	{ "jetbrains-webstorm", NULL, NULL, 1 << 2, 0, -1 },
 	{ "Pavucontrol", NULL, NULL, 0, 1, -1 },
 };
