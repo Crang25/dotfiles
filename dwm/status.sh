@@ -3,6 +3,8 @@
 set -euo pipefail
 
 interval="${1:-5}"
+prev_cpu_total=""
+prev_cpu_idle=""
 
 wifi_status() {
 	if [ "$(nmcli radio wifi 2>/dev/null)" = "enabled" ]; then
@@ -44,6 +46,31 @@ mic_status() {
 	fi
 }
 
+update_cpu_status() {
+	local cpu user nice system idle iowait irq softirq steal guest guest_nice
+	local idle_total total total_delta idle_delta usage
+
+	if ! read -r cpu user nice system idle iowait irq softirq steal guest guest_nice < /proc/stat; then
+		cpu_text="CPU n/a"
+		return
+	fi
+
+	idle_total=$((idle + iowait))
+	total=$((user + nice + system + idle + iowait + irq + softirq + steal))
+
+	if [ -n "$prev_cpu_total" ] && [ "$total" -gt "$prev_cpu_total" ]; then
+		total_delta=$((total - prev_cpu_total))
+		idle_delta=$((idle_total - prev_cpu_idle))
+		usage=$(((100 * (total_delta - idle_delta)) / total_delta))
+		cpu_text="CPU ${usage}%"
+	else
+		cpu_text="CPU n/a"
+	fi
+
+	prev_cpu_total=$total
+	prev_cpu_idle=$idle_total
+}
+
 memory_status() {
 	free | awk '/Mem:/ {printf "RAM %.0f%%", ($3 / $2) * 100}'
 }
@@ -62,7 +89,9 @@ clock_status() {
 	date '+%a %d-%m-%Y %H:%M'
 }
 
+update_cpu_status
 while true; do
-	xsetroot -name "$(wifi_status) | $(volume_status) | $(mic_status) | $(brightness_status) | $(memory_status) | $(battery_status) | $(clock_status)"
+	update_cpu_status
+	xsetroot -name "$(wifi_status) | $(volume_status) | $(mic_status) | $(brightness_status) | ${cpu_text} | $(memory_status) | $(battery_status) | $(clock_status)"
 	sleep "$interval"
 done
