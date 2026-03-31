@@ -258,6 +258,16 @@ in {
   # Set default cursor theme
   environment.etc."gtk-3.0/settings.ini".text = ''
     [Settings]
+    gtk-theme-name=gruvbox-dark
+    gtk-icon-theme-name=oomox-gruvbox-dark
+    gtk-cursor-theme-name=Adwaita
+    gtk-cursor-theme-size=24
+  '';
+
+  environment.etc."gtk-4.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name=gruvbox-dark
+    gtk-icon-theme-name=oomox-gruvbox-dark
     gtk-cursor-theme-name=Adwaita
     gtk-cursor-theme-size=24
   '';
@@ -363,7 +373,7 @@ in {
       "browser.theme.dark-private-windows" = true;
       "browser.in-content.dark-mode" = true;
       "ui.systemUsesDarkTheme" = 1;
-      "widget.content.gtk-theme-override" = "Arc-Dark";
+      "widget.content.gtk-theme-override" = "gruvbox-dark";
     };
   };
 
@@ -413,9 +423,9 @@ in {
     xdotool               # X11 automation/debugging helper during dwm migration
     wmctrl                # Window inspection helper during dwm migration
 
-    # Dark theme packages
-    arc-theme
-    papirus-icon-theme
+    # GTK / icon themes
+    gruvbox-dark-gtk
+    gruvbox-dark-icons-gtk
     adwaita-qt
     adwaita-icon-theme
 
@@ -434,7 +444,7 @@ in {
 
   # GTK theme configuration
   environment.sessionVariables = {
-    GTK_THEME = "Arc-Dark";
+    GTK_THEME = "gruvbox-dark";
     QT_STYLE_OVERRIDE = "gtk2";
     XDG_CONFIG_HOME = "$HOME/.config";
   };
