@@ -1,14 +1,14 @@
 # Dotfiles
 
-Personal Linux dotfiles for terminal tools, editors, and an X11 desktop setup built around `bspwm` with an in-progress `dwm` migration scaffold.
+Personal Linux dotfiles for terminal tools, editors, and an X11 desktop setup built around `dwm`, with the older `bspwm` setup still kept around as a fallback.
 
 ## What this repo includes
 
 - Shell and terminal: `zsh`, `kitty`, `tmux`, `yazi`
 - Editor configs: `nvim`, `emacs`
 - System tools: `btop`, `fastfetch`, `wallust`, `swappy`
-- `bspwm` stack: `bspwm`, `sxhkd`, `picom`, `polybar`, `dunst`, `rofi`
-- `dwm` starter config, session startup, and NixOS package wiring
+- `dwm` stack: custom `dwm`, `sxhkd`, `picom`, `dunst`, `rofi`
+- Legacy `bspwm` config and related tooling retained as fallback
 - Optional NixOS configs: `nixos/`
 
 ## Quick install

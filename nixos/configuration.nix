@@ -74,7 +74,7 @@ in {
   };
 
   # Enable the X11 windowing system.
-  services.displayManager.defaultSession = "none+bspwm";
+  services.displayManager.defaultSession = "none+dwm";
   services.xserver = {
     enable = true;
     windowManager = {
@@ -165,11 +165,11 @@ in {
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
 
-  # Enable BSPWM Display Manager
+  # Optional BSPWM fallback
   # services.xserver.windowManager.bspwm.enable = true;
-  # Enable a display manager (lightdm is lightweight and works well with BSPWM)
+  # Enable a display manager (lightdm is lightweight and works well with X11 WMs)
   # services.xserver.displayManager.lightdm.enable = true;
-  # services.displayManager.defaultSession = "none+bspwm";
+  # services.displayManager.defaultSession = "none+dwm";
 
   # Configure keymap in X11
   # services.xserver.xkb = {
@@ -309,6 +309,7 @@ in {
       distrobox
       keepassxc
       google-chrome
+      brave
       xclip               # Tool to access the X clipboard from a console application
       jetbrains-toolbox
 
@@ -404,9 +405,9 @@ in {
     wget
     git
 
-    # fow BSPWM
-    dmenu  # Application launcher used by BSPWM
-    bspwm                 # Window manager
+    # X11 window manager tooling
+    dmenu
+    bspwm                 # Keep installed as a fallback session
     sxhkd                 # Hotkey daemon
     pamixer               # Pulseaudio command line mixer
     polybar               # Status bar
