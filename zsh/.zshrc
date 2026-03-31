@@ -118,7 +118,8 @@ alias la='ls -a'
 alias lla='ls -la'
 alias lt='ls --tree'
 
-alias update='sudo nixos-rebuild switch'
+# use dotfiles' configuration for rebuild
+alias update='nixos-rebuild switch --flake /home/violin/projects/dotfiles/nixos#nixos'
 
 # User configuration
 
@@ -163,6 +164,8 @@ alias ciemarketplace="cd ~/projects/cakeiteasy/web.marketplace/"
 alias ciemails="cd ~/projects/cakeiteasy/emails/"
 # procurement
 alias cieprocurement="cd ~/projects/cakeiteasy/web.procurement/"
+# texterify
+alias cietexterify="cd ~/projects/cakeiteasy/texterify-cli/"
 # Old admin
 alias cieoldadmin="cd ~/projects/cakeiteasy/web.admin/"
 # mobile admin
@@ -231,3 +234,11 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
 export PATH=/home/violin/.opencode/bin:$PATH
+
+# pnpm
+export PNPM_HOME="/home/violin/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
