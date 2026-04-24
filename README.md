@@ -5,7 +5,7 @@ Personal Linux dotfiles for terminal tools, editors, and an X11 desktop setup bu
 ## What this repo includes
 
 - Shell and terminal: `zsh`, `kitty`, `tmux`, `yazi`
-- Editor configs: `nvim`, `emacs`
+- Editor configs: `nvim`, `emacs`, `.vimrc`, `.ideavimrc`
 - System tools: `btop`, `fastfetch`, `wallust`, `swappy`
 - `dwm` stack: custom `dwm`, `sxhkd`, `picom`, `dunst`, `rofi`
 - Legacy `bspwm` config and related tooling retained as fallback
@@ -13,7 +13,7 @@ Personal Linux dotfiles for terminal tools, editors, and an X11 desktop setup bu
 
 ## Quick install
 
-The install script creates symlinks from this repo to your `~/.config` (and `~/.zshrc`, `~/.tmux.conf`).
+The install script creates symlinks from this repo to your `~/.config` and home-directory dotfiles such as `~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`, and `~/.ideavimrc`.
 
 1. Clone this repo wherever you keep it, then enter the repo:
 

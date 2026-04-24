@@ -25,6 +25,8 @@ link_path() {
 mkdir -p "$HOME/.config"
 
 link_path "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+link_path "$DOTFILES_DIR/.vimrc" "$HOME/.vimrc"
+link_path "$DOTFILES_DIR/.ideavimrc" "$HOME/.ideavimrc"
 link_path "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 link_path "$DOTFILES_DIR/kitty" "$HOME/.config/kitty"
 link_path "$DOTFILES_DIR/yazi" "$HOME/.config/yazi"
