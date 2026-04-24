@@ -175,6 +175,9 @@ alias ciemobileadmin="cd ~/projects/cakeiteasy/mobile.bakery-admin/"
 
 alias screen_record_section='wf-recorder -g "$(slurp)"'
 
+# acme run alias with specific font and size
+alias acme='9 acme -f /mnt/font/HackNF-Regular/18a/font -F /mnt/font/HackNF-Regular/18a/font'
+
 
 # Lazy-load NVM for faster shell startup
 export NVM_DIR="$HOME/.nvm"

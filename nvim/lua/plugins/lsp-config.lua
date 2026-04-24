@@ -3,32 +3,37 @@ return {
     "williamboman/mason.nvim",
 
     lazy = false,
-    config = function()
-      require("mason").setup()
-    end,
+    opts = {},
   },
   {
     "williamboman/mason-lspconfig.nvim",
 
     lazy = false,
-    -- set auto to automatically install needed lsp
-    -- instead to declare it manually in setup
-    opts = {
-      auto_install = true,
-    },
-    config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          "lua_ls",
-          "vtsls",
-          "pyright",
-          -- "clangd",
-          "angularls",
-          "html",
-          'css_variables',
-          'somesass_ls',
-        },
-      })
+    opts = function()
+      local ensure_installed = {
+        "lua_ls",
+        "vtsls",
+        "angularls",
+        "pyright",
+        "html",
+        "css_variables",
+        "somesass_ls",
+        "djlsp",
+        "clangd",
+        "asm_lsp",
+      }
+
+      if vim.fn.executable("cargo") == 1 then
+        table.insert(ensure_installed, "jinja_lsp")
+      end
+
+      return {
+        ensure_installed = ensure_installed,
+        automatic_enable = false,
+      }
+    end,
+    config = function(_, opts)
+      require("mason-lspconfig").setup(opts)
     end,
   },
   {
@@ -37,112 +42,116 @@ return {
 
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      -- local lspconfig = require("lspconfig")
       local lspconfig = vim.lsp.config
+      local has_jinja_lsp = vim.fn.executable("jinja-lsp") == 1
 
-      lspconfig('lua_ls', {
+      lspconfig("lua_ls", {
         capabilities = capabilities,
       })
-      lspconfig('vtsls', {
+
+      lspconfig("vtsls", {
         capabilities = capabilities,
-        filetypes = {
-          'javascript',
-          -- 'javascriptreact',
-          -- 'javascript.jsx',
-          'typescript',
-          -- 'typescriptreact',
-          'typescript.tsx',
-          -- Add the Angular filetypes to ensure templates are handled.
-          'html',
-          'css',
-        },
         settings = {
           vtsls = {
-            -- This is the key setting to enable Angular support
             angular = {
               enable = true,
-            },
-            -- You might also need to explicitly disable the standard tsserver
-            -- if it's conflicting.
-            tsserver = {
-              enabled = false,
             },
           },
         },
       })
-      lspconfig('angularls', {
+
+      lspconfig("angularls", {
         capabilities = capabilities,
-        on_new_config = function(new_config, new_root_dir)
-          -- Tell angular-language-server where your project's node_modules are
-          new_config.cmd = {
-            "ngserver",
-            "--stdio",
-            "--tsProbeLocations", new_root_dir,
-            "--ngProbeLocations", new_root_dir
-          }
-        end,
-        filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" },
-        -- root_dir = vim.lsp.util.root_pattern("angular.json", ".git"),
-        root_markers = { "typescript", "html", "typescriptreact", "typescript.tsx" }
       })
-      -- python
-      lspconfig('pyright', {
+
+      lspconfig("pyright", {
         capabilities = capabilities,
         settings = {
           python = {
             analysis = {
-              -- typeCheckingMode = "basic",
               autoSearchPaths = true,
               useLibraryCodeForTypes = true,
               diagnosticMode = "workspace",
-            },
-            venvPath = {
-              "venv",
-              ".venv",
-              "env",
-              ".env",
-              -- vim.fn.expand("~/.pyenv/versions"),
+              typeCheckingMode = "basic",
             },
           },
         }
       })
-      lspconfig('html', {
-        capabilities = capabilities,
-      })
-      lspconfig('css_variables', {
-        capabilities = capabilities,
-      })
-      -- scss
-      lspconfig('somesass_ls', {
-        capabilities = capabilities,
-      })
-      -- handlebars
-      lspconfig('glint', {
-        capabilities = capabilities,
-        filetypes = { 'handlebars', 'typescript.glimmer' }, -- Only for Glimmer files
-      })
-      -- golang
-      lspconfig('gopls', {
-        capabilities = capabilities,
-      })
-      -- c/c++
-      -- lspconfig('clangd', {
-      --   capabilities = capabilities,
-      -- })
 
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-      -- what does buf.declaration do???
-      vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {})
-      vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, {})
-      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
-      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
-      vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
+      lspconfig("djlsp", {
+        capabilities = capabilities,
+        filetypes = { "htmldjango" },
+        root_markers = { "manage.py", "pyproject.toml", ".git" },
+      })
 
-      -- it's better to use telescope.lsp_references,
-      -- so i declared a map in telescope's spec
-      --vim.keymap.set('n', 'gr', vim.lsp.buf.references, {})
+      if has_jinja_lsp then
+        lspconfig("jinja_lsp", {
+          capabilities = capabilities,
+        })
+      end
+
+      lspconfig("html", {
+        capabilities = capabilities,
+        init_options = {
+          provideFormatter = false,
+        },
+      })
+
+      lspconfig("css_variables", {
+        capabilities = capabilities,
+      })
+
+      lspconfig("somesass_ls", {
+        capabilities = capabilities,
+      })
+
+      lspconfig("glint", {
+        capabilities = capabilities,
+        filetypes = { "handlebars", "typescript.glimmer" },
+      })
+
+      lspconfig("gopls", {
+        capabilities = capabilities,
+      })
+
+      lspconfig("clangd", {
+        capabilities = capabilities,
+      })
+
+      lspconfig("asm_lsp", {
+        capabilities = capabilities,
+      })
+
+      vim.lsp.enable("lua_ls")
+      vim.lsp.enable("vtsls")
+      vim.lsp.enable("angularls")
+      vim.lsp.enable("pyright")
+      vim.lsp.enable("djlsp")
+      if has_jinja_lsp then
+        vim.lsp.enable("jinja_lsp")
+      end
+      vim.lsp.enable("html")
+      vim.lsp.enable("css_variables")
+      vim.lsp.enable("somesass_ls")
+      vim.lsp.enable("glint")
+      vim.lsp.enable("gopls")
+      vim.lsp.enable("clangd")
+      vim.lsp.enable("asm_lsp")
+
+      local lsp_keymaps = vim.api.nvim_create_augroup("user_lsp_keymaps", { clear = true })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = lsp_keymaps,
+        callback = function(event)
+          local opts = { buffer = event.buf, silent = true }
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+          vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, opts)
+          vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+          vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+          vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+        end,
+      })
     end,
   },
 }

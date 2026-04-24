@@ -20,21 +20,6 @@ return {
     },
   },
   {
-    "zbirenbaum/copilot-cmp",
-    event = "InsertEnter",
-    config = function() require("copilot_cmp").setup() end,
-    dependencies = {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      config = function()
-        require("copilot").setup({
-          suggestion = { enabled = false },
-          panel = { enabled = false },
-        })
-      end,
-    },
-  },
-  {
     "hrsh7th/nvim-cmp",
 
     config = function()
@@ -81,14 +66,6 @@ return {
             end
           end),
         }),
-        -- formatting = {
-        --   format = lspkind.cmp_format({
-        --     mode = "symbol",
-        --     max_width = 50,
-        --     symbol_map = { Copilot = "" }
-        --   })
-        -- },
-
         formatting = {
           format = lspkind.cmp_format({
             mode = 'symbol', -- show only symbol annotations
@@ -99,7 +76,6 @@ return {
               menu = 50, -- leading text (labelDetails)
               abbr = 50, -- actual suggestion item
             },
-            symbol_map = { Copilot = "" },
             ellipsis_char = '...',    -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
             show_labelDetails = true, -- show labelDetails in menu. Disabled by default
             -- The function below will be called before any actual modifications from lspkind
@@ -110,10 +86,8 @@ return {
           })
         },
         sources = cmp.config.sources({
-          { name = "copilot",  group_index = 2 },
           { name = "nvim_lsp", group_index = 2 },
           { name = "luasnip",  group_index = 2 }, -- For luasnip users.
-          -- Copilot Source
         }, {
           { name = "buffer" },
           { name = "path",  group_index = 2 },

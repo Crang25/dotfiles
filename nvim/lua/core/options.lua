@@ -16,3 +16,19 @@ opt.cursorline = true -- Highlight the current line
 opt.smartcase = true -- use smart search. h smartcase for more info
 opt.ignorecase = true
 opt.termguicolors = true
+
+vim.filetype.add({
+  extension = {
+    inc = "asm",
+    jinja = "jinja",
+    jinja2 = "jinja",
+    j2 = "jinja",
+    njk = "jinja",
+  },
+  pattern = {
+    [".*%.component%.html"] = "htmlangular",
+    [".*%.directive%.html"] = "htmlangular",
+    [".*%.pipe%.html"] = "htmlangular",
+    [".*/templates/.*%.html"] = "htmldjango",
+  },
+})

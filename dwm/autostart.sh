@@ -19,7 +19,7 @@ else
 	redshift -x && redshift -O 4700 &
 fi
 
-feh --bg-fill "$HOME/Pictures/wallpapers/gruvbox/school_of_athens.jpg"
+feh --bg-fill "$HOME/Pictures/wallpapers/gruvbox/Shishkin,_Ivan_-_Morning_in_a_Pine_Forest.jpg"
 xsetroot -cursor_name left_ptr
 
 if [ -f "$HOME/.Xresources" ]; then
