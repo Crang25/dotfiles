@@ -1,0 +1,35 @@
+File actions: 
+C-x C-f : find a file
+
+Emacs actions:
+C-x C-+ or C-- : zoom in/out
+C-x C-c : Close Emacs
+C-x C-h : show global keybinding
+C-x t   : show Emacs tutorial
+C-g     : stop executing current command if Emacs not responding
+
+Buffer action:
+C-x C-s : save buffer
+C-x C-b : show list of available buffers
+C-x b: swith to buffer
+C-x k: kill current b
+
+C-x u : undo changes
+C-k	: Kill from the cursor position to end of line
+M-k	: Kill to the end of the current sentence
+
+
+Windows actions:
+C-x 1 : delete all windows except of one base
+
+Dired(file tree)
+M-x dired : open file tree
+
+
+Counsel:
+C-j/k in a list: go to next/prev line in a list
+C-x b : swith to buffer
+C-x C-b : find file
+C-l, TAB or enter to select buffer/command/file under the selected line
+C-d : delete the current selected buffer(if before we call C-x b to swith buffer or M-x and etc)
+Alt-o in the minibufer list(if before we call C-x b to swith buffer or M-x and etc) to show available actions, such as copy command/file name in the list
